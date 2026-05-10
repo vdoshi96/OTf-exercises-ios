@@ -2,25 +2,25 @@
 
 ## Current Phase
 
-Planning complete; native iOS implementation is next.
+Native SwiftUI implementation complete and verified locally.
 
 ## What Exists
 
-- Empty workspace initialized as a new git repo on `main`.
 - Web reference cloned into `reference/OTf-exercises`.
 - Source app inspected for structure, data model, search, filters, media, and user state.
 - `IMPLEMENTATION_PLAN.md` written before coding.
+- Standalone Xcode project created at `OTFExercises.xcodeproj`.
+- Real JSON data and thumbnails bundled into the iOS app.
+- Unit and UI tests added.
+- Deliverable docs added: README, architecture, data model, media handling, QA, and migration notes.
 
 ## Verification So Far
 
-- Confirmed Xcode is installed at `/Applications/Xcode.app`.
-- System `xcode-select` points to Command Line Tools, so build commands should set `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer`.
-- Booted iOS 26.4 simulators are available.
+- Build succeeded.
+- Full test scheme succeeded with 5 unit tests and 2 UI tests.
+- System `xcode-select` points to Command Line Tools, so command-line builds should set `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer`.
 
 ## Open Items
 
-- Scaffold SwiftUI app and Xcode project.
-- Migrate JSON and thumbnail resources.
-- Add tests and documentation.
-- Build, test, launch, and manually verify in simulator.
-
+- Optional: configure a personal development team in Xcode for physical-device installs.
+- Optional: add future favorites only if product scope expands beyond the source web app.
