@@ -1,0 +1,9 @@
+.DS_Store
+xcuserdata/
+DerivedData/
+build/
+*.xcresult
+
+# Reference-only clone of the original web app. Do not commit or modify it.
+reference/
+
