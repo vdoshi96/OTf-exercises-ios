@@ -1,6 +1,49 @@
 import Foundation
 import SwiftUI
 
+private enum SocialURLPolicy {
+    static func creatorProfileURL(from rawValue: String) -> URL? {
+        url(from: rawValue, allowedHosts: [.instagram, .tiktok])
+    }
+
+    static func videoURL(from rawValue: String, source: VideoSource) -> URL? {
+        switch source {
+        case .instagram:
+            url(from: rawValue, allowedHosts: [.instagram])
+        case .tiktok:
+            url(from: rawValue, allowedHosts: [.tiktok])
+        }
+    }
+
+    private static func url(from rawValue: String, allowedHosts: Set<SocialHost>) -> URL? {
+        let trimmed = rawValue.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard var components = URLComponents(string: trimmed),
+              components.scheme?.lowercased() == "https",
+              components.user == nil,
+              components.password == nil,
+              let host = components.host?.lowercased()
+        else {
+            return nil
+        }
+
+        let normalizedHost = host.hasPrefix("www.") ? String(host.dropFirst(4)) : host
+        guard let socialHost = SocialHost(rawValue: normalizedHost),
+              allowedHosts.contains(socialHost)
+        else {
+            return nil
+        }
+
+        components.scheme = "https"
+        components.host = host
+        return components.url
+    }
+
+    private enum SocialHost: String {
+        case instagram = "instagram.com"
+        case tiktok = "tiktok.com"
+    }
+}
+
 struct Creator: Codable, Hashable, Identifiable {
     let id: String
     let displayName: String
@@ -19,7 +62,7 @@ struct Creator: Codable, Hashable, Identifiable {
     }
 
     var url: URL? {
-        URL(string: profileURL)
+        SocialURLPolicy.creatorProfileURL(from: profileURL)
     }
 }
 
@@ -53,7 +96,7 @@ struct ExerciseVideo: Codable, Hashable, Identifiable {
     let creator: Creator
 
     var videoURL: URL? {
-        URL(string: url)
+        SocialURLPolicy.videoURL(from: url, source: source)
     }
 
     var firstDescriptionLine: String? {
@@ -187,4 +230,3 @@ extension String {
             .joined(separator: " ")
     }
 }
-
