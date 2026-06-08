@@ -33,7 +33,7 @@ private struct PlaceholderThumbnail: View {
     var body: some View {
         ZStack {
             LinearGradient(
-                colors: [category.tint.opacity(0.45), Color(.tertiarySystemGroupedBackground)],
+                colors: [AppTheme.indigo, category.tint.opacity(0.65), AppTheme.teal.opacity(0.75)],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -63,9 +63,46 @@ struct VideoPreviewCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            HStack(alignment: .top, spacing: 10) {
-                SourceBadge(source: video.source)
+            ZStack(alignment: .bottomLeading) {
+                ThumbnailView(
+                    thumbnail: video.thumbnail,
+                    category: .other,
+                    title: video.description
+                )
+                .frame(maxWidth: .infinity)
+                .aspectRatio(16 / 9, contentMode: .fit)
 
+                LinearGradient(
+                    colors: [.clear, .black.opacity(0.62)],
+                    startPoint: .center,
+                    endPoint: .bottom
+                )
+
+                Image(systemName: "play.circle.fill")
+                    .font(.system(size: 54))
+                    .foregroundStyle(.white, .black.opacity(0.45))
+                    .shadow(radius: 6)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+
+                HStack {
+                    SourceBadge(source: video.source)
+
+                    Spacer()
+
+                    if total > 1 {
+                        Text("\(index + 1) of \(total)")
+                            .font(.caption.weight(.bold))
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 9)
+                            .padding(.vertical, 6)
+                            .background(.black.opacity(0.48), in: Capsule())
+                    }
+                }
+                .padding(12)
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+
+            HStack(alignment: .top, spacing: 10) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(video.creator.displayName)
                         .font(.subheadline.weight(.semibold))
@@ -76,12 +113,6 @@ struct VideoPreviewCard: View {
                 }
 
                 Spacer()
-
-                if total > 1 {
-                    Text("\(index + 1) of \(total)")
-                        .font(.caption.weight(.bold))
-                        .foregroundStyle(.secondary)
-                }
             }
 
             if let description = video.firstDescriptionLine {
@@ -91,21 +122,6 @@ struct VideoPreviewCard: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
 
-            ThumbnailView(
-                thumbnail: video.thumbnail,
-                category: .other,
-                title: video.description
-            )
-            .frame(maxWidth: .infinity)
-            .aspectRatio(16 / 9, contentMode: .fit)
-            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-            .overlay {
-                Image(systemName: "play.circle.fill")
-                    .font(.system(size: 54))
-                    .foregroundStyle(.white, .black.opacity(0.45))
-                    .shadow(radius: 6)
-            }
-
             HStack(spacing: 10) {
                 if let url = video.videoURL {
                     Link(destination: url) {
@@ -113,7 +129,7 @@ struct VideoPreviewCard: View {
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.borderedProminent)
-                    .tint(.orange)
+                    .tint(AppTheme.orange)
                     .accessibilityIdentifier("watchVideo.\(video.id)")
                 }
 
@@ -127,12 +143,13 @@ struct VideoPreviewCard: View {
                 }
             }
         }
-        .padding(14)
-        .background(.background, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .padding(12)
+        .background(AppTheme.card, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
         .overlay {
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .strokeBorder(Color(.separator).opacity(0.35))
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .strokeBorder(AppTheme.line)
         }
+        .shadow(color: .black.opacity(0.04), radius: 12, x: 0, y: 5)
     }
 }
 
@@ -148,4 +165,3 @@ struct SourceBadge: View {
             .background(Color(.secondarySystemGroupedBackground), in: Capsule())
     }
 }
-

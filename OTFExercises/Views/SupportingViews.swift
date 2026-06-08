@@ -1,5 +1,15 @@
 import SwiftUI
 
+enum AppTheme {
+    static let background = Color(.systemGroupedBackground)
+    static let card = Color(.systemBackground)
+    static let ink = Color(red: 0.09, green: 0.10, blue: 0.12)
+    static let orange = Color(red: 0.96, green: 0.36, blue: 0.10)
+    static let teal = Color(red: 0.00, green: 0.50, blue: 0.52)
+    static let indigo = Color(red: 0.18, green: 0.22, blue: 0.42)
+    static let line = Color(.separator).opacity(0.25)
+}
+
 struct LoadingView: View {
     var body: some View {
         VStack(spacing: 14) {
@@ -11,7 +21,7 @@ struct LoadingView: View {
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.systemGroupedBackground))
+        .background(AppTheme.background)
     }
 }
 
@@ -28,7 +38,7 @@ struct ErrorStateView: View {
             Button("Try Again", action: retry)
                 .buttonStyle(.borderedProminent)
         }
-        .background(Color(.systemGroupedBackground))
+        .background(AppTheme.background)
     }
 }
 
@@ -59,11 +69,11 @@ extension View {
     func sectionCard() -> some View {
         padding(16)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(.background, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .background(AppTheme.card, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
             .overlay {
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .strokeBorder(Color(.separator).opacity(0.35))
+                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .strokeBorder(AppTheme.line)
             }
+            .shadow(color: .black.opacity(0.04), radius: 12, x: 0, y: 5)
     }
 }
-

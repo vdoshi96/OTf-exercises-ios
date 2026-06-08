@@ -81,7 +81,7 @@ struct FilterSheetView: View {
                 }
                 .padding()
             }
-            .background(Color(.systemGroupedBackground))
+            .background(AppTheme.background)
             .navigationTitle("Filters")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -153,14 +153,13 @@ struct ChoiceChip: View {
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
             .foregroundStyle(isSelected ? Color.white : Color.primary)
-            .background(isSelected ? Color.orange : Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+            .background(isSelected ? AppTheme.orange : Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
             .overlay {
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .strokeBorder(isSelected ? Color.orange : Color(.separator).opacity(0.35))
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .strokeBorder(isSelected ? AppTheme.orange : Color(.separator).opacity(0.35))
             }
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
-

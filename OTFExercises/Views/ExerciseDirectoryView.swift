@@ -28,19 +28,13 @@ struct ExerciseDirectoryView: View {
                     directoryContent(for: exercises)
                 }
             }
-            .navigationTitle("OTF Exercises")
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showingFilters = true
-                    } label: {
-                        Label(filters.activeCount == 0 ? "Filters" : "Filters \(filters.activeCount)", systemImage: "line.3.horizontal.decrease.circle")
-                    }
-                    .accessibilityIdentifier("filtersButton")
-                }
+            .navigationTitle("Exercises")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(for: Exercise.self) { exercise in
+                ExerciseDetailView(exercise: exercise)
             }
         }
-        .tint(.orange)
+        .tint(AppTheme.orange)
         .task {
             await loadExercises()
         }
@@ -55,6 +49,13 @@ struct ExerciseDirectoryView: View {
             LazyVStack(spacing: 16) {
                 DirectoryHeader(exercises: exercises, creatorCount: options.creators.count)
 
+                DirectorySearchField(
+                    searchText: $searchText,
+                    activeFilterCount: filters.activeCount
+                ) {
+                    showingFilters = true
+                }
+
                 if filters.isActive {
                     ActiveFiltersBar(filters: $filters, creators: options.creators)
                 }
@@ -65,7 +66,7 @@ struct ExerciseDirectoryView: View {
                         .foregroundStyle(.secondary)
                     Spacer()
                 }
-                .padding(.horizontal)
+                .padding(.horizontal, 20)
 
                 if results.isEmpty {
                     ContentUnavailableView(
@@ -85,21 +86,13 @@ struct ExerciseDirectoryView: View {
                             .accessibilityIdentifier("exerciseCard.\(exercise.id)")
                         }
                     }
-                    .padding(.horizontal)
+                    .padding(.horizontal, 16)
                     .padding(.bottom, 24)
                 }
             }
             .padding(.top, 12)
         }
-        .background(Color(.systemGroupedBackground))
-        .searchable(
-            text: $searchText,
-            placement: .navigationBarDrawer(displayMode: .always),
-            prompt: "Search exercises, muscles, equipment, creators"
-        )
-        .navigationDestination(for: Exercise.self) { exercise in
-            ExerciseDetailView(exercise: exercise)
-        }
+        .background(AppTheme.background)
         .sheet(isPresented: $showingFilters) {
             FilterSheetView(filters: $filters, options: options)
         }
@@ -127,16 +120,28 @@ private struct DirectoryHeader: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Find the movement before class starts.")
-                    .font(.largeTitle.bold())
-                    .fixedSize(horizontal: false, vertical: true)
-                    .accessibilityAddTraits(.isHeader)
+            HStack(alignment: .top, spacing: 14) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .fill(AppTheme.orange)
+                    Image(systemName: "figure.strengthtraining.traditional")
+                        .font(.title2.weight(.bold))
+                        .foregroundStyle(.white)
+                }
+                .frame(width: 52, height: 52)
 
-                Text("Search OTF exercise demos by muscle group, equipment, category, platform, and creator.")
-                    .font(.body)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
+                VStack(alignment: .leading, spacing: 5) {
+                    Text("OTF Exercises")
+                        .font(.largeTitle.bold())
+                        .foregroundStyle(.white)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .accessibilityAddTraits(.isHeader)
+
+                    Text("Find the movement before class starts.")
+                        .font(.body.weight(.medium))
+                        .foregroundStyle(.white.opacity(0.72))
+                        .fixedSize(horizontal: false, vertical: true)
+                }
             }
 
             HStack(spacing: 10) {
@@ -145,10 +150,24 @@ private struct DirectoryHeader: View {
                 StatTile(value: creatorCount, label: "Creators", systemImage: "person.crop.circle")
             }
         }
-        .padding(16)
+        .padding(18)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.background, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .padding(.horizontal)
+        .background {
+            ZStack {
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(AppTheme.ink)
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(
+                        LinearGradient(
+                            colors: [AppTheme.indigo.opacity(0.65), AppTheme.ink, AppTheme.teal.opacity(0.38)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+            }
+        }
+        .padding(.horizontal, 16)
+        .shadow(color: AppTheme.ink.opacity(0.18), radius: 18, x: 0, y: 10)
     }
 }
 
@@ -160,22 +179,93 @@ private struct StatTile: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Image(systemName: systemImage)
-                .foregroundStyle(.orange)
+                .foregroundStyle(AppTheme.orange)
                 .font(.headline)
 
             Text(value.formatted())
                 .font(.title3.bold())
+                .foregroundStyle(.white)
                 .minimumScaleFactor(0.75)
                 .lineLimit(1)
 
             Text(label)
                 .font(.caption.weight(.semibold))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.white.opacity(0.68))
                 .lineLimit(1)
         }
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .background(.white.opacity(0.10), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .strokeBorder(.white.opacity(0.10))
+        }
+    }
+}
+
+private struct DirectorySearchField: View {
+    @Binding var searchText: String
+    let activeFilterCount: Int
+    let onFilters: () -> Void
+
+    var body: some View {
+        HStack(spacing: 10) {
+            HStack(spacing: 10) {
+                Image(systemName: "magnifyingglass")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.secondary)
+
+                TextField("Search exercises", text: $searchText)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .submitLabel(.search)
+                    .accessibilityIdentifier("directorySearchField")
+
+                if !searchText.isEmpty {
+                    Button {
+                        searchText = ""
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(.secondary)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Clear search")
+                }
+            }
+            .padding(.horizontal, 14)
+            .frame(height: 48)
+            .background(AppTheme.card, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .strokeBorder(AppTheme.line)
+            }
+
+            Button(action: onFilters) {
+                ZStack(alignment: .topTrailing) {
+                    Image(systemName: activeFilterCount == 0 ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill")
+                        .font(.title2.weight(.semibold))
+                        .frame(width: 48, height: 48)
+                        .foregroundStyle(activeFilterCount == 0 ? AppTheme.ink : AppTheme.orange)
+
+                    if activeFilterCount > 0 {
+                        Text("\(activeFilterCount)")
+                            .font(.caption2.weight(.bold))
+                            .foregroundStyle(.white)
+                            .frame(minWidth: 18, minHeight: 18)
+                            .background(AppTheme.teal, in: Capsule())
+                            .offset(x: 2, y: -2)
+                    }
+                }
+            }
+            .background(AppTheme.card, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .strokeBorder(AppTheme.line)
+            }
+            .accessibilityIdentifier("filtersButton")
+            .accessibilityLabel(activeFilterCount == 0 ? "Filters" : "\(activeFilterCount) active filters")
+        }
+        .padding(.horizontal, 16)
     }
 }
 
@@ -230,4 +320,3 @@ private struct ActiveFiltersBar: View {
         }
     }
 }
-
