@@ -18,3 +18,5 @@
 - Polished the SwiftUI directory/detail/media UI, added a branded app icon asset catalog, and moved directory search into persistent content so it remains visible after returning from detail.
 - Added UI test coverage for the detail-back search persistence regression.
 - Verified simulator build/run, visual QA for directory/search/filter/detail/media flows, 8 passing tests, and signed/installed/launched the app on Vishal's iPhone.
+- Removed the top directory stats panel, made the persistent search row the primary first-screen control, and replaced the app icon with a subagent-generated OTF-inspired exercise-search icon.
+- Re-verified simulator build/run, search/detail-back visual QA, filter sheet visual QA, 8 passing tests, and signed/installed/launched the updated app on Vishal's iPhone.
