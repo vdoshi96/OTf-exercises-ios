@@ -18,10 +18,10 @@ struct ExerciseDetailView: View {
 
                 VideosSection(videos: exercise.videos)
             }
-            .padding(.horizontal)
+            .padding(.horizontal, 16)
             .padding(.vertical, 16)
         }
-        .background(Color(.systemGroupedBackground))
+        .background(AppTheme.background)
         .navigationTitle(exercise.exerciseName)
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -31,28 +31,37 @@ private struct DetailHero: View {
     let exercise: Exercise
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        ZStack(alignment: .bottomLeading) {
             ThumbnailView(
                 thumbnail: exercise.primaryThumbnail,
                 category: exercise.category,
                 title: exercise.exerciseName
             )
             .frame(maxWidth: .infinity)
-            .aspectRatio(16 / 10, contentMode: .fit)
-            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .aspectRatio(4 / 3, contentMode: .fit)
 
-            VStack(alignment: .leading, spacing: 10) {
+            LinearGradient(
+                colors: [.clear, .black.opacity(0.78)],
+                startPoint: .center,
+                endPoint: .bottom
+            )
+
+            VStack(alignment: .leading, spacing: 9) {
                 CategoryBadge(category: exercise.category)
 
                 Text(exercise.exerciseName)
                     .font(.largeTitle.bold())
+                    .foregroundStyle(.white)
                     .fixedSize(horizontal: false, vertical: true)
 
                 Text("\(exercise.videos.count) video \(exercise.videos.count == 1 ? "demo" : "demos") with movement metadata and creator attribution.")
                     .font(.body)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.white.opacity(0.78))
             }
+            .padding(18)
         }
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .shadow(color: AppTheme.ink.opacity(0.14), radius: 18, x: 0, y: 10)
         .accessibilityIdentifier("exerciseDetailHero")
     }
 }
@@ -133,7 +142,7 @@ private struct CreatorRow: View {
         HStack(spacing: 12) {
             Image(systemName: "person.crop.circle.fill")
                 .font(.title2)
-                .foregroundStyle(.orange)
+                .foregroundStyle(AppTheme.orange)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(creator.displayName)
@@ -152,7 +161,7 @@ private struct CreatorRow: View {
                 .foregroundStyle(.secondary)
         }
         .padding(12)
-        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
         .accessibilityLabel("Open creator \(creator.displayName)")
     }
 }
@@ -215,4 +224,3 @@ private struct InfoGrid: View {
         }
     }
 }
-

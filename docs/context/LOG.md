@@ -15,3 +15,6 @@
 
 - Refreshed the bundled iOS catalogue from website source commit `43beed9`.
 - Updated the bundled snapshot to 1,231 grouped exercises and 1,966 videos.
+- Polished the SwiftUI directory/detail/media UI, added a branded app icon asset catalog, and moved directory search into persistent content so it remains visible after returning from detail.
+- Added UI test coverage for the detail-back search persistence regression.
+- Verified simulator build/run, visual QA for directory/search/filter/detail/media flows, 8 passing tests, and signed/installed/launched the app on Vishal's iPhone.

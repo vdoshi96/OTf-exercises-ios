@@ -13,8 +13,10 @@ final class OTFExercisesUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Showing 1,231 of 1,231"].waitForExistence(timeout: 8))
         XCTAssertTrue(app.buttons["exerciseCard.hang-power-clean-options"].exists)
 
-        app.searchFields.firstMatch.tap()
-        app.searchFields.firstMatch.typeText("goblet squat")
+        let searchField = app.textFields["directorySearchField"]
+        XCTAssertTrue(searchField.waitForExistence(timeout: 4))
+        searchField.tap()
+        searchField.typeText("goblet squat")
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@", "Showing")).firstMatch.waitForExistence(timeout: 4))
         XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label CONTAINS[c] %@", "Squat")).firstMatch.waitForExistence(timeout: 4))
     }
@@ -31,5 +33,8 @@ final class OTFExercisesUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Details"].waitForExistence(timeout: 4))
         XCTAssertTrue(app.staticTexts["Video Library"].waitForExistence(timeout: 4))
         XCTAssertTrue(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "watchVideo.")).firstMatch.exists)
+
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.textFields["directorySearchField"].waitForExistence(timeout: 4))
     }
 }

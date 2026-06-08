@@ -19,6 +19,7 @@
 		00000000000000000000010A /* SupportingViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000020A /* SupportingViews.swift */; };
 		00000000000000000000010B /* exercises.json in Resources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000020B /* exercises.json */; };
 		00000000000000000000010C /* thumbs in Resources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000020C /* thumbs */; };
+		00000000000000000000A001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000A002 /* Assets.xcassets */; };
 		00000000000000000000010D /* ExerciseDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000020D /* ExerciseDataTests.swift */; };
 		00000000000000000000010E /* ExerciseSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000020E /* ExerciseSearchTests.swift */; };
 		00000000000000000000010F /* exercises.json in Resources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000020B /* exercises.json */; };
@@ -48,6 +49,7 @@
 		00000000000000000000020A /* SupportingViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportingViews.swift; sourceTree = "<group>"; };
 		00000000000000000000020B /* exercises.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = exercises.json; sourceTree = "<group>"; };
 		00000000000000000000020C /* thumbs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = thumbs; sourceTree = "<group>"; };
+		00000000000000000000A002 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		00000000000000000000020D /* ExerciseDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDataTests.swift; sourceTree = "<group>"; };
 		00000000000000000000020E /* ExerciseSearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSearchTests.swift; sourceTree = "<group>"; };
 		00000000000000000000020F /* OTFExercises.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OTFExercises.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -144,6 +146,7 @@
 		000000000000000000000507 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				00000000000000000000A002 /* Assets.xcassets */,
 				00000000000000000000020B /* exercises.json */,
 				00000000000000000000020C /* thumbs */,
 			);
@@ -281,6 +284,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00000000000000000000A001 /* Assets.xcassets in Resources */,
 				00000000000000000000010B /* exercises.json in Resources */,
 				00000000000000000000010C /* thumbs in Resources */,
 			);
@@ -474,9 +478,11 @@
 		000000000000000000000803 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PY5P84CUHB;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "OTF Exercises";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
@@ -501,9 +507,11 @@
 		000000000000000000000804 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PY5P84CUHB;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "OTF Exercises";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";

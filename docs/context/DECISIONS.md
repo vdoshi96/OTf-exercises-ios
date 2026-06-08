@@ -12,3 +12,6 @@ Do not embed TikTok or Instagram web widgets in SwiftUI. The web app relies on b
 
 The source web app does not implement favorites, saved exercises, history, or user-specific state. The iOS app will not present those as completed features.
 
+## 2026-06-08: Persistent Directory Search Row
+
+Use a custom SwiftUI search row inside the directory content instead of the navigation-bar `.searchable` drawer. The in-content control keeps search visible and test-addressable after detail navigation while preserving native SwiftUI behavior.
