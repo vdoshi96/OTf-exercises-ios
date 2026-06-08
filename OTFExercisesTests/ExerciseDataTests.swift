@@ -6,8 +6,8 @@ final class ExerciseDataTests: XCTestCase {
         let exercises = try loadBundledExercises()
         let videoCount = exercises.reduce(0) { $0 + $1.videos.count }
 
-        XCTAssertEqual(exercises.count, 1_220)
-        XCTAssertEqual(videoCount, 1_953)
+        XCTAssertEqual(exercises.count, 1_231)
+        XCTAssertEqual(videoCount, 1_966)
         XCTAssertTrue(exercises.contains { $0.id == "goblet-squat" || $0.exerciseName.localizedCaseInsensitiveContains("squat") })
     }
 

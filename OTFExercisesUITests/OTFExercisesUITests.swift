@@ -10,7 +10,7 @@ final class OTFExercisesUITests: XCTestCase {
     }
 
     func testDirectoryAndSearchFlow() throws {
-        XCTAssertTrue(app.staticTexts["Showing 1,220 of 1,220"].waitForExistence(timeout: 8))
+        XCTAssertTrue(app.staticTexts["Showing 1,231 of 1,231"].waitForExistence(timeout: 8))
         XCTAssertTrue(app.buttons["exerciseCard.hang-power-clean-options"].exists)
 
         app.searchFields.firstMatch.tap()
@@ -20,7 +20,7 @@ final class OTFExercisesUITests: XCTestCase {
     }
 
     func testFilterDetailAndMediaFlow() throws {
-        XCTAssertTrue(app.staticTexts["Showing 1,220 of 1,220"].waitForExistence(timeout: 8))
+        XCTAssertTrue(app.staticTexts["Showing 1,231 of 1,231"].waitForExistence(timeout: 8))
         app.buttons["filtersButton"].tap()
         XCTAssertTrue(app.navigationBars["Filters"].waitForExistence(timeout: 4))
         app.buttons["Upper Body"].tap()

@@ -4,7 +4,7 @@
 
 - Reference repo: `reference/OTf-exercises`, cloned read-only from `https://github.com/vdoshi96/OTf-exercises`.
 - Stack: Next.js app router with static `src/data/exercises.json`, Fuse.js client search, filter chips, exercise cards, and detail routes at `/exercise/[id]`.
-- Current data snapshot: 1,220 grouped exercises, 1,953 videos, 7 categories, 27 muscle groups, 16 equipment values, 2 creators, TikTok and Instagram sources.
+- Current data snapshot: 1,231 grouped exercises, 1,966 videos, 7 categories, 27 muscle groups, 16 equipment values, 2 creators, TikTok and Instagram sources.
 - Media: Instagram thumbnails are self-hosted in `public/thumbs` and referenced as `/thumbs/<shortcode>.jpg`; TikTok videos generally have no local thumbnail. Social video playback is via web embeds in the web app.
 - User-specific state: no favorites, saved exercises, history, accounts, or backend state found.
 
@@ -24,4 +24,3 @@
 - Run unit tests on an iPhone simulator.
 - Launch the app in a booted simulator and manually verify list loading, search, filters, detail navigation, media/link affordances, and empty states.
 - Record limitations, especially social media playback constraints and lack of backend/user-state features in the source app.
-

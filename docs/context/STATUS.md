@@ -11,13 +11,13 @@ Native SwiftUI implementation complete and verified locally.
 - `IMPLEMENTATION_PLAN.md` written before coding.
 - Standalone Xcode project created at `OTFExercises.xcodeproj`.
 - Real JSON data and thumbnails bundled into the iOS app.
+- Bundled catalogue refreshed from website source commit `43beed9` on 2026-06-08.
 - Unit and UI tests added.
 - Deliverable docs added: README, architecture, data model, media handling, QA, and migration notes.
 
 ## Verification So Far
 
-- Build succeeded.
-- Full test scheme succeeded with 5 unit tests and 2 UI tests.
+- Full test scheme succeeded after the catalogue refresh with 6 unit tests and 2 UI tests.
 - System `xcode-select` points to Command Line Tools, so command-line builds should set `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer`.
 
 ## Open Items

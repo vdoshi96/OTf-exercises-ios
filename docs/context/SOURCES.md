@@ -18,9 +18,8 @@
 
 ## Data Snapshot
 
-- 1,220 grouped exercises.
-- 1,953 videos.
+- 1,231 grouped exercises.
+- 1,966 videos.
 - Categories: cardio, core, full_body, lower_body, mobility, other, upper_body.
 - Platforms: instagram, tiktok.
 - Creators: Coach Rudy, Austin Hendrickson (Trainingtall).
-

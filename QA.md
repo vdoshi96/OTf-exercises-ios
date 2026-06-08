@@ -2,24 +2,13 @@
 
 ## Environment
 
-- Date: 2026-05-10
-- Xcode: 26.4.1, build 17E202
-- Simulator runtime: iOS 26.4.1 available through Xcode
+- Date: 2026-06-08
+- Xcode: 26.5, build 17F42
+- Simulator: iPhone 17 Pro, iOS 26.5, `03B7D471-F406-489C-A454-8840EBE42F70`
 - Verified with explicit `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer`
+- Source catalogue commit: `43beed9` from `reference/OTf-exercises`
 
 ## Commands Run
-
-Build:
-
-```bash
-DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
-xcodebuild build \
-  -project OTFExercises.xcodeproj \
-  -scheme OTFExercises \
-  -destination 'id=0A503FC2-C839-4E93-B5CF-7109171F9FD4' \
-  -derivedDataPath build/DerivedData \
-  CODE_SIGNING_ALLOWED=NO
-```
 
 Full tests:
 
@@ -28,17 +17,18 @@ DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
 xcodebuild test \
   -project OTFExercises.xcodeproj \
   -scheme OTFExercises \
-  -destination 'id=6E343165-9BEA-40D4-8A90-0C95C2F1BB64' \
+  -destination 'id=03B7D471-F406-489C-A454-8840EBE42F70' \
   -derivedDataPath build/DerivedData \
   CODE_SIGNING_ALLOWED=NO
 ```
 
 ## Results
 
-- Build succeeded.
-- Unit tests passed: 5 tests.
+- Build succeeded as part of the test scheme.
+- Unit tests passed: 6 tests.
 - UI tests passed: 2 tests.
 - Full scheme test result: `** TEST SUCCEEDED **`.
+- Bundled catalogue decodes with 1,231 exercises and 1,966 videos.
 
 ## Verified Flows
 
@@ -52,7 +42,6 @@ xcodebuild test \
 
 ## Notes
 
-XcodeBuildMCP could not list simulators because the global `xcode-select` points to Command Line Tools. Shell commands succeeded by setting `DEVELOPER_DIR` explicitly.
+An initial XcodeBuildMCP test run timed out at the tool boundary and exposed stale UI count assertions. After updating those assertions, the direct shell `xcodebuild test` run passed.
 
 No backend credentials or secrets are required.
-
