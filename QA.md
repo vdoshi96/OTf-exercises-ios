@@ -61,14 +61,15 @@ xcrun devicectl device process launch \
 ## Visual QA
 
 - Latest local screenshot evidence is kept in ignored files under `build/screenshots/2026-06-08-*.jpg`.
-- Directory screen: hero, stats, persistent search field, filter button, and exercise cards fit on iPhone 17 Pro without overlap.
+- App icon evidence is kept in ignored file `build/screenshots/2026-06-08-app-icon.png`.
+- Directory screen: top stats/hero panel removed; persistent search field is the primary first control and exercise cards begin immediately below the result count.
 - Detail round trip: opened an exercise detail, returned to the directory, and confirmed `directorySearchField` remained visible and present in the runtime UI tree.
 - Search state: typed `goblet squat`, confirmed 16 matching real catalogue results, stable search/clear/filter controls, and readable compact cards.
-- Filter sheet: opened the sheet from the searched state, verified compact-detent chip layout, selected `Lower Body`, and confirmed the active-filter badge/count updated.
-- Long-title detail: opened a filtered long-title result and verified the hero title wrapped cleanly.
-- Media section: scrolled to the video card and verified thumbnail, source badge, creator metadata, and Instagram/profile controls fit on the narrow simulator.
+- Filter sheet: opened the sheet from the larger search row and verified compact-detent chip layout remained readable.
+- App icon: generated a purpose-built OTF-inspired orange/black exercise-search icon through subagent work and verified all required AppIcon PNG dimensions.
 
 ## Notes
 
-- The disappearing search bar was fixed by replacing the navigation-bar `.searchable` control with a persistent SwiftUI search row in the directory content.
+- The disappearing search bar remains fixed by using a persistent SwiftUI search row in the directory content.
 - No `apple.env` credentials were needed during this run; signing used the existing Xcode Apple Development account and provisioning profile.
+- Xcode emitted stale-keychain warnings for unrelated saved account entries during physical-device build, but the build still signed successfully with the working Apple Development identity.
