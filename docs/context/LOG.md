@@ -10,3 +10,8 @@
 - Added XCTest coverage for data decoding, filter options, search, filter combinations, and empty results.
 - Added XCUITest coverage for directory load, search, filter sheet, detail navigation, and media link controls.
 - Verified build and full test scheme with explicit `DEVELOPER_DIR`.
+
+## 2026-06-08
+
+- Refreshed the bundled iOS catalogue from website source commit `43beed9`.
+- Updated the bundled snapshot to 1,231 grouped exercises and 1,966 videos.

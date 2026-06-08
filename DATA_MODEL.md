@@ -6,8 +6,8 @@ Exercise data comes from `reference/OTf-exercises/src/data/exercises.json` and i
 
 Current bundled snapshot:
 
-- 1,220 grouped exercises
-- 1,953 video demos
+- 1,231 grouped exercises
+- 1,966 video demos
 - 7 categories
 - 27 muscle groups
 - 16 equipment values
@@ -74,4 +74,3 @@ The native filter state preserves source filter meaning:
 - equipment
 - platform
 - creators, multi-select
-
