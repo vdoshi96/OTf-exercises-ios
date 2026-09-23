@@ -1,6 +1,26 @@
 # QA
 
-## Environment
+## 2026-09-23 — catalogue sync and portfolio polish
+
+- Simulator: iPhone 17 Pro, `42143A89-D5C8-4CA5-B718-F8DB902441F3`
+- Source catalogue: web `main` at `4567fd5` (778 exercises, 1,405 videos)
+
+```bash
+xcodebuild test \
+  -project OTFExercises.xcodeproj \
+  -scheme OTFExercises \
+  -destination 'id=42143A89-D5C8-4CA5-B718-F8DB902441F3' \
+  -derivedDataPath /tmp/otf-ios-dd \
+  CODE_SIGNING_ALLOWED=NO
+```
+
+- Unit tests: 9 passed (data decoding, thumbnail coverage for all 1,405 videos including 431 TikTok, facet labels, URL policy, search, filters, browse order, empty state).
+- UI tests: 3 passed (directory + search, filter + detail + media, About disclaimer), 1 opt-in walkthrough skipped.
+- Visual QA was done with `simctl` screenshots of the directory, `squat` search, filter sheet, exercise detail, and About sheet. The captures are in `docs/screenshots/`.
+
+## 2026-06-08 — previous run
+
+### Environment
 
 - Date: 2026-06-08
 - Xcode: 26.5, build 17F42
@@ -9,7 +29,7 @@
 - Verified with explicit `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer`
 - Source catalogue commit: `43beed9` from `reference/OTf-exercises`
 
-## Commands Run
+### Commands Run
 
 Simulator launch:
 
@@ -47,7 +67,7 @@ xcrun devicectl device process launch \
   com.vdoshi.OTFExercises
 ```
 
-## Results
+### Results
 
 - Simulator build, install, and launch succeeded.
 - Unit tests passed: 6 tests.
@@ -58,7 +78,7 @@ xcrun devicectl device process launch \
 - Device launch succeeded for `com.vdoshi.OTFExercises`.
 - Bundled catalogue decodes with 1,231 exercises and 1,966 videos.
 
-## Visual QA
+### Visual QA
 
 - Latest local screenshot evidence is kept in ignored files under `build/screenshots/2026-06-08-*.jpg`.
 - App icon evidence is kept in ignored file `build/screenshots/2026-06-08-app-icon.png`.
@@ -68,7 +88,7 @@ xcrun devicectl device process launch \
 - Filter sheet: opened the sheet from the larger search row and verified compact-detent chip layout remained readable.
 - App icon: generated a purpose-built OTF-inspired orange/black exercise-search icon through subagent work and verified all required AppIcon PNG dimensions.
 
-## Notes
+### Notes
 
 - The disappearing search bar remains fixed by using a persistent SwiftUI search row in the directory content.
 - No `apple.env` credentials were needed during this run; signing used the existing Xcode Apple Development account and provisioning profile.

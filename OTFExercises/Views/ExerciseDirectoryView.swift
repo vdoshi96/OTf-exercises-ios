@@ -13,9 +13,11 @@ struct ExerciseDirectoryView: View {
     @State private var searchText = ""
     @State private var filters = ExerciseFilterState()
     @State private var showingFilters = false
+    @State private var showingAbout = false
+    @State private var path: [Exercise] = []
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             Group {
                 switch loadState {
                 case .loading:
@@ -30,6 +32,17 @@ struct ExerciseDirectoryView: View {
             }
             .navigationTitle("OTF Exercises")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showingAbout = true
+                    } label: {
+                        Image(systemName: "info.circle")
+                    }
+                    .accessibilityLabel("About this app")
+                    .accessibilityIdentifier("aboutButton")
+                }
+            }
             .navigationDestination(for: Exercise.self) { exercise in
                 ExerciseDetailView(exercise: exercise)
             }
@@ -85,14 +98,24 @@ struct ExerciseDirectoryView: View {
                         }
                     }
                     .padding(.horizontal, 16)
-                    .padding(.bottom, 24)
                 }
+
+                DisclaimerFooter()
+                    .padding(.bottom, 12)
             }
             .padding(.top, 18)
         }
+        .scrollDismissesKeyboard(.immediately)
         .background(AppTheme.background)
         .sheet(isPresented: $showingFilters) {
             FilterSheetView(filters: $filters, options: options)
+        }
+        .sheet(isPresented: $showingAbout) {
+            AboutView(
+                exerciseCount: exercises.count,
+                videoCount: exercises.reduce(0) { $0 + $1.videos.count },
+                creatorCount: options.creators.count
+            )
         }
     }
 
@@ -102,9 +125,35 @@ struct ExerciseDirectoryView: View {
         do {
             let exercises = try await repository.loadExercises()
             loadState = .loaded(exercises)
+            applyLaunchScenario(exercises: exercises)
         } catch {
             loadState = .failed(error.localizedDescription)
         }
+    }
+}
+
+extension ExerciseDirectoryView {
+    /// Debug-only launch arguments used to stage App Store / portfolio
+    /// screenshots from `xcrun simctl launch`, e.g.
+    /// `-screenshotQuery squat`, `-screenshotFilters YES`,
+    /// `-screenshotExercise goblet-squat`, `-screenshotAbout YES`.
+    fileprivate func applyLaunchScenario(exercises: [Exercise]) {
+        #if DEBUG
+        let defaults = UserDefaults.standard
+        if let query = defaults.string(forKey: "screenshotQuery") {
+            searchText = query
+        }
+        if let id = defaults.string(forKey: "screenshotExercise"),
+           let exercise = exercises.first(where: { $0.id == id }) {
+            path = [exercise]
+        }
+        if defaults.bool(forKey: "screenshotFilters") {
+            showingFilters = true
+        }
+        if defaults.bool(forKey: "screenshotAbout") {
+            showingAbout = true
+        }
+        #endif
     }
 }
 
@@ -120,7 +169,7 @@ private struct DirectorySearchField: View {
                     .font(.title3.weight(.bold))
                     .foregroundStyle(AppTheme.orange)
 
-                TextField("Search exercises, muscles, equipment", text: $searchText)
+                TextField("Search exercises or muscles", text: $searchText)
                     .font(.body.weight(.semibold))
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()

@@ -64,13 +64,16 @@ struct VideoPreviewCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             ZStack(alignment: .bottomLeading) {
-                ThumbnailView(
-                    thumbnail: video.thumbnail,
-                    category: .other,
-                    title: video.description
-                )
-                .frame(maxWidth: .infinity)
-                .aspectRatio(16 / 9, contentMode: .fit)
+                Color.clear
+                    .aspectRatio(16 / 9, contentMode: .fit)
+                    .overlay {
+                        ThumbnailView(
+                            thumbnail: video.thumbnail,
+                            category: .other,
+                            title: video.description
+                        )
+                    }
+                    .clipped()
 
                 LinearGradient(
                     colors: [.clear, .black.opacity(0.62)],

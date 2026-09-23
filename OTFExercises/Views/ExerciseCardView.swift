@@ -43,8 +43,10 @@ struct ExerciseCardView: View {
                     .lineLimit(1)
 
                 HStack(spacing: 10) {
-                    Label(exercise.equipment.isEmpty ? "Bodyweight" : exercise.equipment.prefix(2).map(\.titleCasedFilterLabel).joined(separator: ", "), systemImage: "dumbbell")
-                        .lineLimit(1)
+                    if !exercise.equipment.isEmpty {
+                        Label(exercise.equipment.prefix(2).map(\.titleCasedFilterLabel).joined(separator: ", "), systemImage: "dumbbell")
+                            .lineLimit(1)
+                    }
 
                     Label(exercise.creatorSummary, systemImage: "person.crop.circle")
                         .lineLimit(1)
@@ -85,7 +87,9 @@ struct VideoCountBadge: View {
     let count: Int
 
     var body: some View {
-        Label("\(count)", systemImage: "play.fill")
+        // Thumbnails already carry a centred play glyph, so the badge names
+        // the demo count in words instead of repeating the icon.
+        Text("\(count) \(count == 1 ? "demo" : "demos")")
             .font(.caption2.weight(.bold))
             .foregroundStyle(.white)
             .padding(.horizontal, 8)

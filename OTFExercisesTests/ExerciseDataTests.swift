@@ -6,8 +6,8 @@ final class ExerciseDataTests: XCTestCase {
         let exercises = try loadBundledExercises()
         let videoCount = exercises.reduce(0) { $0 + $1.videos.count }
 
-        XCTAssertEqual(exercises.count, 1_231)
-        XCTAssertEqual(videoCount, 1_966)
+        XCTAssertEqual(exercises.count, 778)
+        XCTAssertEqual(videoCount, 1_405)
         XCTAssertTrue(exercises.contains { $0.id == "goblet-squat" || $0.exerciseName.localizedCaseInsensitiveContains("squat") })
     }
 
@@ -15,11 +15,32 @@ final class ExerciseDataTests: XCTestCase {
         let exercises = try loadBundledExercises()
         let options = ExerciseSearchService.makeFilterOptions(from: exercises)
 
-        XCTAssertEqual(Set(options.categories), Set(ExerciseCategory.allCases))
+        // The reviewed catalog classifies every exercise; "other" is unused.
+        XCTAssertEqual(Set(options.categories), Set(ExerciseCategory.allCases).subtracting([.other]))
         XCTAssertEqual(options.platforms, [.instagram, .tiktok])
         XCTAssertEqual(options.creators.map(\.id), ["trainingtall", "coachingotf"])
         XCTAssertTrue(options.muscleGroups.contains("shoulders"))
         XCTAssertTrue(options.equipment.contains("dumbbell"))
+    }
+
+    func testEveryVideoThumbnailIsBundledIncludingTikTok() throws {
+        let exercises = try loadBundledExercises()
+        // Thumbnails ship in the host app bundle, not the test bundle.
+        let bundle = Bundle.main
+        let videos = exercises.flatMap(\.videos)
+        let missing = videos.filter { ThumbnailResolver.localURL(for: $0.thumbnail, bundle: bundle) == nil }
+
+        XCTAssertEqual(missing.map(\.id), [])
+        XCTAssertEqual(videos.filter { $0.source == .tiktok }.count, 431)
+        XCTAssertTrue(exercises.allSatisfy { $0.primaryThumbnail != nil })
+    }
+
+    func testFacetLabelsMatchWebDirectory() {
+        XCTAssertEqual("y-bell".titleCasedFilterLabel, "Y-Bell")
+        XCTAssertEqual("TRX straps".titleCasedFilterLabel, "TRX Straps")
+        XCTAssertEqual("bosu".titleCasedFilterLabel, "BOSU")
+        XCTAssertEqual("medicine ball".titleCasedFilterLabel, "Medicine Ball")
+        XCTAssertEqual("rear deltoids".titleCasedFilterLabel, "Rear Deltoids")
     }
 
     func testSocialURLsAreLimitedToExpectedHTTPSHosts() {

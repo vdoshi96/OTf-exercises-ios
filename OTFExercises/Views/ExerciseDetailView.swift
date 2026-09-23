@@ -17,6 +17,8 @@ struct ExerciseDetailView: View {
                 CreatorsSection(creators: exercise.uniqueCreators)
 
                 VideosSection(videos: exercise.videos)
+
+                DisclaimerFooter()
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 16)
@@ -32,13 +34,18 @@ private struct DetailHero: View {
 
     var body: some View {
         ZStack(alignment: .bottomLeading) {
-            ThumbnailView(
-                thumbnail: exercise.primaryThumbnail,
-                category: exercise.category,
-                title: exercise.exerciseName
-            )
-            .frame(maxWidth: .infinity)
-            .aspectRatio(4 / 3, contentMode: .fit)
+            // A fixed-ratio container keeps scaledToFill portrait thumbnails
+            // from stretching the hero to full screen height.
+            Color.clear
+                .aspectRatio(4 / 5, contentMode: .fit)
+                .overlay {
+                    ThumbnailView(
+                        thumbnail: exercise.primaryThumbnail,
+                        category: exercise.category,
+                        title: exercise.exerciseName
+                    )
+                }
+                .clipped()
 
             LinearGradient(
                 colors: [.clear, .black.opacity(0.78)],
@@ -54,7 +61,7 @@ private struct DetailHero: View {
                     .foregroundStyle(.white)
                     .fixedSize(horizontal: false, vertical: true)
 
-                Text("\(exercise.videos.count) video \(exercise.videos.count == 1 ? "demo" : "demos") with movement metadata and creator attribution.")
+                Text("\(exercise.videos.count) video \(exercise.videos.count == 1 ? "demo" : "demos") · \(exercise.creatorSummary)")
                     .font(.body)
                     .foregroundStyle(.white.opacity(0.78))
             }
@@ -76,7 +83,7 @@ private struct MetadataSection: View {
             InfoGrid(items: [
                 InfoItem(title: "Movement", value: exercise.movementType.displayName, systemImage: "figure.run"),
                 InfoItem(title: "Muscle Groups", value: exercise.muscleGroups.map(\.titleCasedFilterLabel).joined(separator: ", "), systemImage: "figure.strengthtraining.traditional"),
-                InfoItem(title: "Equipment", value: exercise.equipmentSummary.titleCasedFilterLabel, systemImage: "dumbbell"),
+                InfoItem(title: "Equipment", value: exercise.equipmentSummary, systemImage: "dumbbell"),
                 InfoItem(title: "Creators", value: exercise.creatorSummary, systemImage: "person.crop.circle")
             ])
         }

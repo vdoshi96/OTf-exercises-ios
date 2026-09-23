@@ -2,9 +2,13 @@
 
 ## Source Refresh
 
-When updating source data, pull a fresh copy of the web repo into `reference/OTf-exercises`, inspect changes, then migrate only the needed JSON/media into the iOS app. Keep the reference clone ignored and untouched by commits.
+When updating source data, use an up-to-date checkout of the web repo (read-only), copy `src/data/exercises.json` into `OTFExercises/Resources/`, copy every `/thumbs/*` file it references from `public/thumbs` into `OTFExercises/Resources/thumbs`, and delete thumbnails no longer referenced. Then update the count assertions in `ExerciseDataTests` and `OTFExercisesUITests`.
 
 ## iOS Verification
 
-Set `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` for local Xcode commands because the active developer directory may point at Command Line Tools.
+Run `xcodebuild test -project OTFExercises.xcodeproj -scheme OTFExercises -destination 'id=<SIMULATOR_UUID>' -derivedDataPath /tmp/otf-ios-dd CODE_SIGNING_ALLOWED=NO`. If `xcode-select -p` points at Command Line Tools, prefix commands with `DEVELOPER_DIR=<path to Xcode>/Contents/Developer`.
+
+## Screenshots and Walkthrough
+
+Debug builds accept launch arguments for staging screens: `xcrun simctl launch <id> com.vdoshi.OTFExercises -screenshotQuery squat` (also `-screenshotFilters YES`, `-screenshotExercise <id>`, `-screenshotAbout YES`). The paced `testRecordedWalkthrough` UI test runs only with `TEST_RUNNER_OTF_WALKTHROUGH=1` and `-parallel-testing-enabled NO` while `xcrun simctl io <id> recordVideo` captures it.
 
