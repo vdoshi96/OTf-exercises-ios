@@ -2,15 +2,15 @@
 
 ## Source
 
-Exercise data comes from `reference/OTf-exercises/src/data/exercises.json` and is copied into `OTFExercises/Resources/exercises.json`.
+Exercise data comes from the web app's `src/data/exercises.json` ([vdoshi96/OTf-exercises](https://github.com/vdoshi96/OTf-exercises)) and is copied into `OTFExercises/Resources/exercises.json` together with every thumbnail it references.
 
-Current bundled snapshot:
+Current bundled snapshot (synced from web `main` at `4567fd5`, 2026-09-23):
 
-- 1,231 grouped exercises
-- 1,966 video demos
-- 7 categories
-- 27 muscle groups
-- 16 equipment values
+- 778 grouped exercises
+- 1,405 video demos (974 Instagram, 431 TikTok), each with a bundled thumbnail
+- 6 categories in use (`other` is defined but unused by the reviewed catalog)
+- 29 muscle groups
+- 12 equipment values
 - 2 creators
 - 2 platforms: Instagram and TikTok
 

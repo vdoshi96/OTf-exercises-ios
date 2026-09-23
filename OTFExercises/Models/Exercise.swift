@@ -137,7 +137,7 @@ enum ExerciseCategory: String, Codable, CaseIterable, Hashable, Identifiable {
     var tint: Color {
         switch self {
         case .upperBody: .orange
-        case .lowerBody: .yellow
+        case .lowerBody: Color(red: 0.72, green: 0.47, blue: 0.0)
         case .core: .red
         case .fullBody: .orange
         case .cardio: .pink
@@ -211,8 +211,12 @@ struct Exercise: Codable, Hashable, Identifiable {
         }
     }
 
+    /// Matches the web directory: an empty equipment list means the source
+    /// did not say, not that the movement is bodyweight-only.
     var equipmentSummary: String {
-        equipment.isEmpty ? "Bodyweight" : equipment.joined(separator: ", ")
+        equipment.isEmpty
+            ? "Equipment not specified"
+            : equipment.map(\.titleCasedFilterLabel).joined(separator: ", ")
     }
 
     var primaryThumbnail: String? {
@@ -221,11 +225,25 @@ struct Exercise: Codable, Hashable, Identifiable {
 }
 
 extension String {
+    private static let facetLabelOverrides: [String: String] = [
+        "bosu": "BOSU",
+        "trx straps": "TRX Straps",
+        "y-bell": "Y-Bell"
+    ]
+
+    /// Display label for stored muscle-group and equipment values, kept in
+    /// step with the web directory's `facetLabel()`.
     var titleCasedFilterLabel: String {
-        replacingOccurrences(of: "_", with: " ")
+        if let override = Self.facetLabelOverrides[lowercased()] {
+            return override
+        }
+
+        return replacingOccurrences(of: "_", with: " ")
             .split(separator: " ")
             .map { word in
-                word.prefix(1).uppercased() + word.dropFirst()
+                word.split(separator: "-", omittingEmptySubsequences: false)
+                    .map { $0.prefix(1).uppercased() + $0.dropFirst() }
+                    .joined(separator: "-")
             }
             .joined(separator: " ")
     }

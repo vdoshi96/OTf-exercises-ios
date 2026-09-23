@@ -77,3 +77,111 @@ extension View {
             .shadow(color: .black.opacity(0.04), radius: 12, x: 0, y: 5)
     }
 }
+
+enum AppInfo {
+    static let disclaimer = "Unofficial fan directory — not affiliated with Orangetheory Fitness. Videos belong to their creators."
+    static let webDirectoryURL = URL(string: "https://o-tf-exercises.vercel.app")!
+}
+
+struct DisclaimerFooter: View {
+    var body: some View {
+        Text(AppInfo.disclaimer)
+            .font(.footnote)
+            .foregroundStyle(.secondary)
+            .multilineTextAlignment(.center)
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, 24)
+            .padding(.vertical, 12)
+            .accessibilityIdentifier("disclaimerFooter")
+    }
+}
+
+struct AboutView: View {
+    @Environment(\.dismiss) private var dismiss
+
+    let exerciseCount: Int
+    let videoCount: Int
+    let creatorCount: Int
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 18) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("OTF Exercises")
+                            .font(.largeTitle.bold())
+
+                        Text("Look up a floor exercise before class. \(exerciseCount.formatted()) exercises and \(videoCount.formatted()) demo videos, searchable offline.")
+                            .font(.body)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+
+                    HStack(spacing: 10) {
+                        AboutStat(value: exerciseCount, label: "Exercises")
+                        AboutStat(value: videoCount, label: "Demos")
+                        AboutStat(value: creatorCount, label: "Creators")
+                    }
+
+                    VStack(alignment: .leading, spacing: 10) {
+                        Label("Unofficial", systemImage: "info.circle.fill")
+                            .font(.headline)
+                            .foregroundStyle(AppTheme.orange)
+
+                        Text(AppInfo.disclaimer)
+                            .font(.body)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .accessibilityIdentifier("aboutDisclaimer")
+
+                        Text("Orangetheory, OTF, and related marks belong to their respective owners. Each demo opens the original post on Instagram or TikTok.")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .sectionCard()
+
+                    Link(destination: AppInfo.webDirectoryURL) {
+                        Label("Open the web directory", systemImage: "safari")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+                    .tint(AppTheme.orange)
+                }
+                .padding(20)
+            }
+            .background(AppTheme.background)
+            .navigationTitle("About")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") { dismiss() }
+                        .fontWeight(.semibold)
+                }
+            }
+        }
+        .presentationDetents([.large])
+    }
+}
+
+private struct AboutStat: View {
+    let value: Int
+    let label: String
+
+    var body: some View {
+        VStack(spacing: 2) {
+            Text(value.formatted())
+                .font(.title3.bold().monospacedDigit())
+            Text(label)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 12)
+        .background(AppTheme.card, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .strokeBorder(AppTheme.line)
+        }
+    }
+}

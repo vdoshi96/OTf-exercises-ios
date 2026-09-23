@@ -72,7 +72,7 @@ enum ExerciseSearchService {
         let normalizedQuery = query.searchNormalized
 
         guard !normalizedQuery.isEmpty else {
-            return exercises
+            return browseOrdered(exercises)
         }
 
         return exercises
@@ -90,6 +90,16 @@ enum ExerciseSearchService {
 
                 return $0.score > $1.score
             }
+            .map(\.exercise)
+    }
+
+    /// Default directory order, shared with the web app: leading punctuation
+    /// such as "(Hang Power) Clean" is ignored, numbers compare numerically,
+    /// and digit-led titles ("1/2 Kneeling…") follow the alphabetical run.
+    static func browseOrdered(_ exercises: [Exercise]) -> [Exercise] {
+        exercises
+            .map { (exercise: $0, key: BrowseSortKey(title: $0.exerciseName)) }
+            .sorted { $0.key.precedes($1.key) }
             .map(\.exercise)
     }
 
@@ -170,6 +180,41 @@ enum ExerciseSearchService {
 
             return partial
         }
+    }
+}
+
+struct BrowseSortKey {
+    private static let englishLocale = Locale(identifier: "en_US")
+
+    let isNumeric: Bool
+    let key: String
+    let title: String
+
+    init(title: String) {
+        let stripped = title
+            .drop { !$0.isLetter && !$0.isNumber }
+            .filter { !"()[]{}\"'\u{2018}\u{2019}\u{201C}\u{201D}".contains($0) }
+        let key = stripped.trimmingCharacters(in: .whitespaces)
+        self.title = title
+        self.key = key
+        self.isNumeric = key.first?.isNumber ?? false
+    }
+
+    func precedes(_ other: BrowseSortKey) -> Bool {
+        if isNumeric != other.isNumeric {
+            return !isNumeric
+        }
+
+        let order = key.compare(
+            other.key,
+            options: [.caseInsensitive, .numeric, .diacriticInsensitive],
+            locale: Self.englishLocale
+        )
+        if order != .orderedSame {
+            return order == .orderedAscending
+        }
+
+        return title < other.title
     }
 }
 
